@@ -1,6 +1,6 @@
-import { chakra, theme, useColorModeValue, useTheme } from '@chakra-ui/react';
+import { Button, ButtonProps, chakra, theme, useColorModeValue, useTheme } from '@chakra-ui/react';
 import { useStyleConfig, ThemingProps } from '@chakra-ui/react';
-import { RouteParams } from 'atomic-router';
+import { RouteInstance, RouteParams } from 'atomic-router';
 import { Link, type LinkProps } from 'atomic-router-react';
 
 // const AtomicThemingProps = useStyleConfig('Button');
@@ -24,24 +24,4 @@ const AtomicLink = chakra<TLink, LinkStyledProps>(Link, {
     };
   },
 });
-export { AtomicLink, AtomicButton };
-
-const AtomicButton = chakra<TLink, LinkStyledProps>(Link, {
-  shouldForwardProp: (prop) => ['to', 'params', 'query', 'children'].includes(prop),
-  baseStyle: (props) => {
-    const text = useColorModeValue('gray.800', 'white');
-    const textHover = useColorModeValue('gray.600', 'white');
-    const _theme = useTheme();
-    const isInline = (props as unknown as LinkStyledProps).inline;
-    console.log(_theme);
-    return _theme.components.Button.baseStyle;
-    // textDecorationLine: isInline ? 'underline' : 'none',
-    // border: '2px solid',
-    // borderColor: text,
-    // color: isInline ? 'blue.500' : text,
-    // _hover: {
-    //   textDecorationLine: 'underline',
-    //   color: isInline ? 'blue.300' : textHover,
-    // },
-  },
-});
+export { AtomicLink };

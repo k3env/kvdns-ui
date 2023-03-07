@@ -1,12 +1,13 @@
 import { createEffect, forward, restore } from 'effector';
 import { UpdateZoneParams, DeleteZoneResponse } from '../types/router-types';
 import { NSZone, ZoneAssociation } from '../types/SchemaV3';
+import { $currentServer } from './servers';
 
 const fx_getZones = createEffect<void, ZoneAssociation[]>(() =>
-  fetch(`${import.meta.env.VITE_API_URL}/api/v2/zone`).then((v) => v.json()),
+  fetch(`${$currentServer.getState()}/api/v2/zone`).then((v) => v.json()),
 );
 const fx_addZone = createEffect<NSZone, ZoneAssociation>((zone: NSZone) =>
-  fetch(`${import.meta.env.VITE_API_URL}/api/v2/zone`, {
+  fetch(`${$currentServer.getState()}/api/v2/zone`, {
     method: 'POST',
     body: JSON.stringify({ zone }),
     headers: {
@@ -15,7 +16,7 @@ const fx_addZone = createEffect<NSZone, ZoneAssociation>((zone: NSZone) =>
   }).then((v) => v.json()),
 );
 const fx_updateZone = createEffect<UpdateZoneParams, ZoneAssociation>((params: UpdateZoneParams) =>
-  fetch(`${import.meta.env.VITE_API_URL}/api/v2/zone`, {
+  fetch(`${$currentServer.getState()}/api/v2/zone`, {
     method: 'PATCH',
     body: JSON.stringify(params),
     headers: {
@@ -24,7 +25,7 @@ const fx_updateZone = createEffect<UpdateZoneParams, ZoneAssociation>((params: U
   }).then((r) => r.json()),
 );
 const fx_deleteZone = createEffect<string, DeleteZoneResponse>((zone: string) =>
-  fetch(`${import.meta.env.VITE_API_URL}/api/v2/zone`, {
+  fetch(`${$currentServer.getState()}/api/v2/zone`, {
     method: 'DELETE',
     body: JSON.stringify({ id: zone }),
     headers: {

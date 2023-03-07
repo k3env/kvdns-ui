@@ -1,4 +1,5 @@
 import { createEffect, restore } from 'effector';
+import { useStore } from 'effector-react';
 import { buildJsonReqInit } from '../helpers/helpers';
 import {
   QueryRecordParams,
@@ -8,18 +9,19 @@ import {
   DeleteRecordResponse,
 } from '../types/router-types';
 import { RecordAssociation } from '../types/SchemaV3';
+import { $currentServer } from './servers';
 
 const fx_getRecords = createEffect<string, RecordAssociation[]>((zoneId: string) =>
-  fetch(`${import.meta.env.VITE_API_URL}/api/v2/zone/${zoneId}/record`).then((r) => r.json()),
+  fetch(`${$currentServer.getState()}/api/v2/zone/${zoneId}/record`).then((r) => r.json()),
 );
 const fx_addRecord = createEffect<AddRecordParams, RecordAssociation>((p: AddRecordParams) =>
-  fetch(`${import.meta.env.VITE_API_URL}/api/v2/record`, buildJsonReqInit(p, 'POST')).then((r) => r.json()),
+  fetch(`${$currentServer.getState()}/api/v2/record`, buildJsonReqInit(p, 'POST')).then((r) => r.json()),
 );
 const fx_updateRecord = createEffect<UpdateRecordParams, RecordAssociation>((p: UpdateRecordParams) =>
-  fetch(`${import.meta.env.VITE_API_URL}/api/v2/record`, buildJsonReqInit(p, 'PATCH')).then((r) => r.json()),
+  fetch(`${$currentServer.getState()}/api/v2/record`, buildJsonReqInit(p, 'PATCH')).then((r) => r.json()),
 );
 const fx_deleteRecord = createEffect<DeleteRecordParams, DeleteRecordResponse>((p) =>
-  fetch(`${import.meta.env.VITE_API_URL}/api/v2/record`, buildJsonReqInit(p, 'DELETE')).then((r) => r.json()),
+  fetch(`${$currentServer.getState()}/api/v2/record`, buildJsonReqInit(p, 'DELETE')).then((r) => r.json()),
 );
 
 const $records = restore(fx_getRecords, []);

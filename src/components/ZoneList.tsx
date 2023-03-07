@@ -24,13 +24,16 @@ import { useStore } from 'effector-react';
 import { useRef, useState } from 'react';
 import { $zones, fx_deleteZone } from '../stores/zones';
 import { ZoneAssociation } from '../types/SchemaV3';
-import { AtomicLink as AtomicButton } from './AtomicLink';
+import { AtomicLink } from './AtomicLink';
 import { Routes } from '../helpers/router';
+import { $currentServer } from '../stores/servers';
 
 export function ZoneList(props: {}) {
   const zones = useStore($zones);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [zone, selectZone] = useState<ZoneAssociation | null>(null);
+
+  const currentServer = useStore($currentServer);
 
   const buttonLike = defineStyle({
     border: '1px',
@@ -41,11 +44,12 @@ export function ZoneList(props: {}) {
       <Heading size={'md'} pb={'2'}>
         Managed zones
       </Heading>
+      <Heading size={'sm'} pb={'2'}>
+        Current server: {currentServer}
+      </Heading>
       <Text>
         Click arrow icon for expand zone info and actions or{' '}
-        <AtomicButton to={Routes.zoneAddRoute} inline>
-          add new zone
-        </AtomicButton>
+        <AtomicLink to={Routes.zoneAddRoute}>add new zone</AtomicLink>
       </Text>
       <Accordion allowToggle pt={3} pb={5}>
         {zones.map((z) => (
@@ -62,12 +66,12 @@ export function ZoneList(props: {}) {
               <p>Primary NS: {z.zone.authority.primary}</p>
               <p>Zone admin: {z.zone.authority.admin.replace('.', '@')}</p>
               <HStack pt={4}>
-                <AtomicButton to={Routes.zoneEditRoute} params={{ zoneId: z.id }}>
+                <AtomicLink to={Routes.zoneEditRoute} params={{ zoneId: z.id }}>
                   Edit zone
-                </AtomicButton>
-                <AtomicButton to={Routes.recordsRoute} params={{ zoneId: z.id }}>
+                </AtomicLink>
+                <AtomicLink to={Routes.recordsRoute} params={{ zoneId: z.id }}>
                   Show records
-                </AtomicButton>
+                </AtomicLink>
                 <Link
                   onClick={() => {
                     selectZone(z);
@@ -83,9 +87,9 @@ export function ZoneList(props: {}) {
       </Accordion>
       <ZoneDeleteModal isOpen={isOpen} onClose={onClose} za={zone} />
       <HStack>
-        <AtomicButton to={Routes.zoneAddRoute} size={'2xl'} color={'twitter'}>
+        <Button onClick={() => Routes.zoneAddRoute.open()} colorScheme={'facebook'}>
           Add new zone
-        </AtomicButton>
+        </Button>
       </HStack>
     </Box>
   );

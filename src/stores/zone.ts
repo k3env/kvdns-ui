@@ -4,9 +4,10 @@
 
 import { createEffect, restore } from 'effector';
 import { ZoneAssociation } from '../types/SchemaV3';
+import { $currentServer } from './servers';
 
 const fx_getZone = createEffect<string, ZoneAssociation>((zoneId: string) =>
-  fetch(`${import.meta.env.VITE_API_URL}/api/v2/zone/${zoneId}`).then((r) => r.json()),
+  fetch(`${$currentServer.getState()}/api/v2/zone/${zoneId}`).then((r) => r.json()),
 );
 
 const $zone = restore(fx_getZone, null);

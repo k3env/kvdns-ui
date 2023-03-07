@@ -5,6 +5,7 @@ import { ZoneList, RecordsList, ZoneEditFormPage, ZoneNewFormPage } from '@compo
 
 import * as Routes from './routes/_index';
 import { RecordFormAddPage, RecordFormEditPage } from '../components/RecordForm';
+import { ServersList } from '../components/ServersList';
 
 const RoutesView = createRoutesView({
   routes: [
@@ -14,6 +15,7 @@ const RoutesView = createRoutesView({
     { route: Routes.recordsRoute, view: RecordsList },
     { route: Routes.recordEditRoute, view: RecordFormEditPage },
     { route: Routes.recordAddRoute, view: RecordFormAddPage },
+    { route: Routes.serversRoute, view: ServersList },
   ],
 });
 
@@ -24,6 +26,7 @@ const routes = [
   { path: '/zone/:zoneId/edit', route: Routes.zoneEditRoute },
   { path: '/zone/:zoneId/record/new', route: Routes.recordAddRoute },
   { path: '/zone/:zoneId/record/:recordId/edit', route: Routes.recordEditRoute },
+  { path: '/servers', route: Routes.serversRoute },
 ];
 
 const history = createBrowserHistory();
