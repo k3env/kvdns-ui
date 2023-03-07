@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui
+  namespace: kvdns
+spec:
+  selector:
+    matchLabels:
+      app: kvdns
+      tier: ui
+  template:
+    metadata:
+      labels:
+        app: kvdns
+        tier: ui
+    spec:
+      containers:
+        - name: ui
+          image: k3env/kvdns-ui:latest
+          resources:
+            limits:
+              memory: "64Mi"
+              cpu: "100m"
+          ports:
+            - containerPort: 80
